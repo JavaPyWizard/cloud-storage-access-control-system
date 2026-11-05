@@ -1,0 +1,17 @@
+AEGISVAULT - PRIVATE FINANCIAL RECORD
+
+Document Classification: PRIVATE
+Department: Finance
+Record Type: Internal Budget Summary
+
+Quarterly Budget: INR 500000
+Operational Expenses: INR 180000
+Infrastructure Allocation: INR 120000
+
+This document contains fictional financial information
+for access-control testing purposes.
+
+Expected Access:
+Owner: READ, WRITE, DELETE
+Other Users: DENIED
+Anonymous: DENIED

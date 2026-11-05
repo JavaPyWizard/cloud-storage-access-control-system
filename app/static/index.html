@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AegisVault | Security Lab</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside>
+        <div class="brand">
+          <span class="mark">◈</span> AEGIS<span>VAULT</span>
+        </div>
+        <div class="subbrand">CLOUD SECURITY LAB / V1.3</div>
+        <nav>
+          <button data-tab="overview" class="active">▦ &nbsp; Overview</button>
+
+          <button data-tab="objects">▤ &nbsp; Storage objects</button>
+
+          <button data-tab="simulator">⌁ &nbsp; Access simulator</button>
+
+          <button data-tab="verification">✓ &nbsp; Verification matrix</button>
+
+          <button data-tab="monitoring">◈ &nbsp; Security monitoring</button>
+
+          <button data-tab="audits">◷ &nbsp; Audit trail</button>
+
+          <button data-tab="users">♙ &nbsp; User roles</button>
+        </nav>
+        <div class="asidefoot">
+          ACTIVITY 12<br /><small>Cryptography & Network Security</small>
+        </div>
+      </aside>
+      <main>
+        <header>
+          <div>
+            <div class="eyebrow">SECURITY OPERATIONS / CONTROL CENTER</div>
+            <h1 id="heading">Overview</h1>
+          </div>
+          <div class="identity">
+            <span class="dot"></span><span id="who">Not signed in</span
+            ><button id="logout" class="ghost hidden">Sign out</button>
+          </div>
+        </header>
+        <div id="notice"></div>
+        <section id="auth" class="auth">
+          <div class="panel authbox">
+            <div class="eyebrow">AUTHORIZED ACCESS ONLY</div>
+            <h2>Welcome to AegisVault</h2>
+            <p>Sign in to operate your cloud access-control laboratory.</p>
+            <div class="fields">
+              <input
+                id="username"
+                placeholder="Username"
+                autocomplete="username"
+              /><input
+                id="password"
+                placeholder="Password (10+ characters)"
+                type="password"
+                autocomplete="current-password"
+              />
+            </div>
+            <div class="actions">
+              <button id="login" class="primary">Sign in</button
+              ><button id="register" class="secondary">Create account</button>
+            </div>
+            <p class="hint">
+              First registered account becomes the administrator. Create other
+              accounts to simulate access by different roles.
+            </p>
+          </div>
+        </section>
+        <div id="workspace" class="hidden">
+          <section id="overview" class="tab">
+            <div class="hero">
+              <div class="eyebrow">LIVE ACCESS CONTROL ENVIRONMENT</div>
+              <h2>
+                Protect every object.<br /><em>Verify every decision.</em>
+              </h2>
+              <p>
+                Model policy boundaries, test identity-based requests, and
+                independently verify least-privilege enforcement.
+              </p>
+              <button class="primary" data-jump="simulator">
+                Launch access simulator →
+              </button>
+            </div>
+            <div class="stats">
+              <div class="stat">
+                <span>STORAGE OBJECTS</span><strong id="statObjects">0</strong
+                ><small>Registered resources</small>
+              </div>
+              <div class="stat">
+                <span>IDENTITIES</span><strong id="statUsers">0</strong
+                ><small>Test actors</small>
+              </div>
+              <div class="stat">
+                <span>POLICY CHECKS</span><strong id="statChecks">0</strong
+                ><small>Expected vs actual</small>
+              </div>
+              <div class="stat">
+                <span>DENIED EVENTS</span><strong id="statDenied">0</strong
+                ><small>Recorded audit events</small>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="eyebrow">POLICY CATALOG</div>
+              <div class="policygrid">
+                <div>
+                  <b>01 / PRIVATE</b>
+                  <p>Only the object owner can access the resource.</p>
+                </div>
+                <div>
+                  <b>02 / PUBLIC_READ</b>
+                  <p>Anyone may read; modifications remain owner-only.</p>
+                </div>
+                <div>
+                  <b>03 / ROLE_RESTRICTED</b>
+                  <p>
+                    Owner or matching role may read; modifications remain
+                    owner-only.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="objects" class="tab hidden">
+            <div class="panel">
+              <h2>Register storage object</h2>
+              <form id="uploadForm" class="formrow">
+                <input id="file" type="file" required /><select id="policy">
+                  <option>PRIVATE</option>
+                  <option>PUBLIC_READ</option>
+                  <option>ROLE_RESTRICTED</option></select
+                ><select id="allowedRole">
+                  <option>VIEWER</option>
+                  <option>EDITOR</option>
+                  <option>ADMIN</option></select
+                ><button class="primary">Upload object</button>
+              </form>
+              <p class="hint">
+                Max 5 MB by default. Object content is stored locally; access
+                policies are simulated in this application.
+              </p>
+            </div>
+            <div class="panel">
+              <h2>Storage registry</h2>
+              <div class="scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Object</th>
+                      <th>Owner</th>
+                      <th>Policy</th>
+                      <th>Size</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="objectRows"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+          <section id="simulator" class="tab hidden">
+            <div class="panel">
+              <div class="eyebrow">POLICY DECISION ENGINE</div>
+              <h2>Access request simulator</h2>
+              <p>
+                Choose an identity, storage object, and requested operation.
+                This is a simulation and never executes the selected operation.
+              </p>
+              <div class="formrow">
+                <select id="simActor"></select
+                ><select id="simObject"></select
+                ><select id="simAction">
+                  <option>READ</option>
+                  <option>WRITE</option>
+                  <option>DELETE</option></select
+                ><button id="simulate" class="primary">Evaluate request</button>
+              </div>
+              <div id="simResult" class="result">No request evaluated yet.</div>
+            </div>
+          </section>
+          <section id="verification" class="tab hidden">
+            <div class="panel">
+              <div class="eyebrow">INDEPENDENT ORACLE / FULL COMPARISON</div>
+              <h2>Expected access matrix</h2>
+              <p>
+                Each decision is compared with an independently implemented,
+                table-oriented expected result.
+              </p>
+              <div class="formrow">
+                <button id="verify" class="primary">
+                  Run full verification</button
+                ><button id="csv" class="secondary">Export CSV</button
+                ><span id="verifySummary"></span>
+              </div>
+              <div class="scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Object</th>
+                      <th>Actor</th>
+                      <th>Action</th>
+                      <th>Expected</th>
+                      <th>Actual</th>
+                      <th>Match</th>
+                    </tr>
+                  </thead>
+                  <tbody id="matrixRows"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section id="monitoring" class="tab hidden">
+            <div class="monitor-header">
+              <div>
+                <h2>Security Intelligence Center</h2>
+                <p>Real-time access-control analytics and threat indicators</p>
+              </div>
+              <button id="refreshMonitoring" type="button" class="secondary">
+                Refresh analytics
+              </button>
+            </div>
+
+            <div class="monitor-grid">
+              <div class="monitor-card">
+                <span>TOTAL SECURITY EVENTS</span>
+                <strong id="monTotal">0</strong>
+              </div>
+
+              <div class="monitor-card">
+                <span>ALLOWED REQUESTS</span>
+                <strong id="monAllowed" class="monitor-green">0</strong>
+              </div>
+
+              <div class="monitor-card">
+                <span>DENIED REQUESTS</span>
+                <strong id="monDenied" class="monitor-red">0</strong>
+              </div>
+
+              <div class="monitor-card">
+                <span>DENIAL RATE</span>
+                <strong id="monRate">0%</strong>
+              </div>
+            </div>
+
+            <div class="monitor-panels">
+              <div class="monitor-panel">
+                <h3>Access Decision Distribution</h3>
+                <p>Allowed versus denied security events</p>
+
+                <div class="monitor-progress">
+                  <div id="monAllowedBar" class="monitor-allowed-bar"></div>
+                  <div id="monDeniedBar" class="monitor-denied-bar"></div>
+                </div>
+
+                <div class="monitor-legend">
+                  <span>Allowed: <b id="monAllowedPct">0%</b></span>
+                  <span>Denied: <b id="monDeniedPct">0%</b></span>
+                </div>
+              </div>
+
+              <div class="monitor-panel">
+                <h3>Event Classification</h3>
+                <p>Real operations versus simulated requests</p>
+
+                <div class="monitor-classification">
+                  <div>
+                    <span>Real events</span>
+                    <strong id="monReal">0</strong>
+                  </div>
+                  <div>
+                    <span>Simulated events</span>
+                    <strong id="monSimulated">0</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="monitor-panel">
+                <h3>Operations Breakdown</h3>
+                <p>Distribution of security operations</p>
+                <div id="monActions"></div>
+              </div>
+
+              <div class="monitor-panel">
+                <h3>Suspicious Activity Alerts</h3>
+                <p>Repeated unauthorized access attempts</p>
+                <div id="monAlerts"></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="audits" class="tab hidden">
+            <div class="panel">
+              <div class="formrow spread">
+                <h2>Security audit trail</h2>
+                <button id="refreshAudit" class="secondary">Refresh</button>
+              </div>
+              <div class="formrow">
+                <select id="auditDecision" aria-label="Decision filter">
+                  <option>ALL</option>
+                  <option>ALLOW</option>
+                  <option>DENY</option></select
+                ><select id="auditAction" aria-label="Action filter">
+                  <option>ALL</option>
+                  <option>READ</option>
+                  <option>WRITE</option>
+                  <option>DELETE</option>
+                  <option>UPLOAD</option></select
+                ><select id="auditSimulated" aria-label="Simulation filter">
+                  <option>ALL</option>
+                  <option>YES</option>
+                  <option>NO</option>
+                </select>
+              </div>
+              <div class="formrow">
+                <span id="auditCount">0 events</span
+                ><span class="pill">Allowed: <b id="auditAllowed">0</b></span
+                ><span class="pill deny"
+                  >Denied: <b id="auditDenied">0</b></span
+                >
+              </div>
+              <div class="scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>Actor ID</th>
+                      <th>Object ID</th>
+                      <th>Action</th>
+                      <th>Decision</th>
+                      <th>Reason</th>
+                    </tr>
+                  </thead>
+                  <tbody id="auditRows"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+          <section id="users" class="tab hidden">
+            <div class="panel">
+              <h2>Identity directory</h2>
+              <p>
+                Only the first registered administrator can assign roles. Other
+                accounts can be created from the sign-in screen after signing
+                out.
+              </p>
+              <div class="scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>User ID</th>
+                      <th>Username</th>
+                      <th>Role</th>
+                      <th>Manage</th>
+                    </tr>
+                  </thead>
+                  <tbody id="userRows"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

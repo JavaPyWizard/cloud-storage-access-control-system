@@ -1,0 +1,15 @@
+AEGISVAULT - PUBLIC ANNOUNCEMENT
+
+Document Classification: PUBLIC_READ
+Department: Administration
+
+Announcement:
+The Cloud Storage Access Control and Policy Verification
+System is available for educational demonstration.
+
+All users may read this document.
+
+Expected Access:
+Owner: READ, WRITE, DELETE
+Other Users: READ
+Anonymous: READ

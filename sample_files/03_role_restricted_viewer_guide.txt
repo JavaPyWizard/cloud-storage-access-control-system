@@ -1,0 +1,16 @@
+AEGISVAULT - VIEWER ACCESS GUIDE
+
+Document Classification: ROLE_RESTRICTED
+Required Role: VIEWER
+
+This document demonstrates role-restricted access.
+
+Users assigned the VIEWER role may read this document.
+Users without the matching role cannot read it unless
+they own the document.
+
+Expected Access:
+Owner: READ, WRITE, DELETE
+Matching VIEWER: READ
+Other Users: DENIED
+Anonymous: DENIED
